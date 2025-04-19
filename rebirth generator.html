@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Phoenix Rebirth Generator</title>
+</head>
+<body>
+  <h1>Phoenix Rebirth Generator</h1>
+  <p>Enter your name and be reborn from the ashes...</p>
+
+  <input type="text" id="oldName" placeholder="Your old name">
+  <br>
+  <button onclick="rebirth()">Burn & Rebirth</button>
+
+  <h2 id="reborn" class="reborn-name"></h2>
+
+  <script>
+    const phoenixNames = [
+      "Ashen Flame", "Nova Sky", "Solara", "Cinderheart", 
+      "Auryn", "Fireborn", "Ember Wraith", "Phoenixshade",
+      "Zeraphiel", "Skyrend", "Blazewing", "Pyra"
+    ];
+
+    function rebirth() {
+      const input = document.getElementById("oldName");
+      const name = input.value.trim();
+      
+      if (!name) {
+        alert("Please enter a name to burn.");
+        return;
+      }
+
+      input.classList.add("fade-out");
+
+      setTimeout(() => {
+        const newName = phoenixNames[Math.floor(Math.random() * phoenixNames.length)];
+        document.getElementById("reborn").innerText = `You are reborn as: ${newName}`;
+        input.value = '';
+        input.classList.remove("fade-out");
+      }, 2000); // matches animation time
+    }
+  </script>
+</body>
+</html>
