@@ -67,15 +67,78 @@
       width: 824px;
       height: 463px
     }
+  .audio-player {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 280px;
+    z-index: 1000;
+}
+
   </style>
 </head>
 <body>
-  <embed
-  src="yule log.mp3"
-  loop="true"
-  autostart="true"
-  hidden="true"
-  volume="63">
+<script>
+    const audio = document.getElementById('audio');
+const playPause = document.getElementById('playPause');
+const progress = document.getElementById('progress');
+const currentTime = document.getElementById('currentTime');
+const duration = document.getElementById('duration');
+
+// Play or pause the audio
+playPause.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+    playPause.innerHTML = '&#10073;&#10073;'; // pause icon
+  } else {
+    audio.pause();
+    playPause.innerHTML = '&#9658;'; // play icon
+  }
+});
+
+// Update the progress bar as the audio plays
+audio.addEventListener('timeupdate', () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progress.value = percent;
+
+  currentTime.textContent = formatTime(audio.currentTime);
+});
+
+// Update the audio time when the progress bar changes
+progress.addEventListener('input', () => {
+  const time = (progress.value / 100) * audio.duration;
+  audio.currentTime = time;
+});
+
+// Set total duration once metadata is loaded
+audio.addEventListener('loadedmetadata', () => {
+  duration.textContent = formatTime(audio.duration);
+});
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+  </script>
+  <div class="audio-player">
+      <audio id="audio" src="yule log.mp3"></audio>
+      
+      <button id="playPause" class="play">&#9658;</button>
+      <input type="range" id="progress" value="0" min="0" max="100" step="1" />
+      
+      <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+    </div>
+  
   <header>
     <h1>🔥 The Phoenix</h1>
     <p>The mythical bird of fire and rebirth</p>
